@@ -14,64 +14,69 @@
 ```
 #include <stdio.h>
 #include <ctype.h>
-#include <string.h>
-#include <stdlib.h>
 
 #define MAX_EXPRESSION_SIZE 100
+#define MAX_SYMBOLS 15
 
 int main() {
-	int i = 0, j = 0, x = 0, n, flag = 0;
-	int k;
-	char b[MAX_EXPRESSION_SIZE], d[15], c, srch;
+    int i = 0, j, x = 0, flag = 0;
+    char b[MAX_EXPRESSION_SIZE];
+    char d[MAX_SYMBOLS], c, srch;
 
-	printf("Enter the Expression terminated by $: ");
-	while ((c = getchar()) != '$' && i < MAX_EXPRESSION_SIZE - 1) {
-		b[i++] = c;
-	}
-	b[i] = '\0';
-	n = i - 1;
+    printf("Enter the Expression terminated by $: ");
 
-	printf("\nGiven Expression: %s\n", b);
+    while ((c = getchar()) != '$' &&
+           c != EOF && i < MAX_EXPRESSION_SIZE - 1) {
+        b[i++] = c;
+    }
 
-	printf("\nSymbol Table\n");
-	printf("Symbol\tType\t\tAddress\n");
+    b[i] = '\0';
 
-	for (j = 0; j <= n; j++) {
-		c = b[j];
-		if (isalpha((unsigned char)c)) {
-			int alreadyExists = 0;
-			for (k = 0; k < x; k++) {
-				if (d[k] == c) {
-					alreadyExists = 1;
-					break;
-				}
-			}
+    printf("\nGiven Expression: %s\n", b);
 
-			if (!alreadyExists) {
-				d[x] = c;
-				printf("%c\tidentifier\t%p\n", c, (void*)&d[x]);
-				x++;
-			}
-		}
-	}
+    printf("\nSymbol Table\n");
+    printf("Symbol\tType\t\tAddress\n");
 
-	// Clear input buffer
-	while ((c = getchar()) != '\n' && c != EOF);
+    for (j = 0; j < i; j++) {
+        c = b[j];
 
-	printf("\nEnter the symbol to search: ");
-	srch = getchar();
+        if (isalpha((unsigned char)c)) {
+            int alreadyExists = 0;
 
-	for (i = 0; i < x; i++) {
-		if (srch == d[i]) {
-			printf("Symbol Found\n");
-			flag = 1;
-			break;
-		}
-	}
-	if (flag == 0)
-		printf("Symbol Not Found\n");
+            for (int k = 0; k < x; k++) {
+                if (d[k] == c) {
+                    alreadyExists = 1;
+                    break;
+                }
+            }
 
-	return 0;
+            if (!alreadyExists && x < MAX_SYMBOLS) {
+                d[x] = c;
+
+                printf("%c\tidentifier\t%p\n",
+                       c, (void *)&d[x]);
+
+                x++;
+            }
+        }
+    }
+
+    printf("\nEnter the symbol to search: ");
+    scanf(" %c", &srch);
+
+    for (i = 0; i < x; i++) {
+        if (srch == d[i]) {
+            flag = 1;
+            break;
+        }
+    }
+
+    if (flag == 1)
+        printf("Symbol Found\n");
+    else
+        printf("Symbol Not Found\n");
+
+    return 0;
 }
 ```
 
@@ -79,11 +84,12 @@ int main() {
 # OUTPUT
 Symbol Found
 
-<img width="577" height="437" alt="Screenshot 2026-07-24 162137" src="https://github.com/user-attachments/assets/6291632b-ecc4-49bb-ae8b-8858a0e4ac8e" />
+<img width="1186" height="610" alt="image" src="https://github.com/user-attachments/assets/f5a3d76e-b81d-4a33-aa67-6cfc514a3b30" />
+
 
 Symbol Not Found
 
-<img width="548" height="443" alt="Screenshot 2026-07-24 162410" src="https://github.com/user-attachments/assets/afd234f1-1894-465b-b785-10ecd30975fb" />
+<img width="1177" height="604" alt="image" src="https://github.com/user-attachments/assets/94b69265-b2aa-4147-b147-aff0cc410243" />
 
 # RESULT
 ### The program to implement a symbol table is executed and the output is verified.
